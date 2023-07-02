@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IdProvider } from "../gateways/IdProvider";
-import { WebSocketProvider } from "../gateways/WebSocketProvider";
-import { RootState } from "../store/store";
+import { IdProvider } from "../../gateways/IdProvider";
+import { WebSocketProvider } from "../../gateways/WebSocketProvider";
+import { RootState } from "../../store/store";
 
 export const initializeChat = createAsyncThunk<
   { chatId: string },

@@ -1,8 +1,8 @@
-import { StubIdProvider } from "../../Secondary-Adapters/IdProvider/StubIdProvider";
-import { SpyWebSocketProvider } from "../../Secondary-Adapters/WebSocketProvider/SpyWebSocketProvider";
-import { StateBuilder } from "../store/builders/StateBuilder";
-import { ChatStatus } from "../store/slices/chat";
-import { StoreBuilder } from "../store/store";
+import { StubIdProvider } from "../../../Secondary-Adapters/IdProvider/StubIdProvider";
+import { SpyWebSocketProvider } from "../../../Secondary-Adapters/WebSocketProvider/SpyWebSocketProvider";
+import { StateBuilder } from "../../store/builders/StateBuilder";
+import { ChatStatus } from "../../store/slices/chat";
+import { StoreBuilder } from "../../store/store";
 import { DATA } from "./fixture";
 import { initializeChat } from "./initializeChat";
 

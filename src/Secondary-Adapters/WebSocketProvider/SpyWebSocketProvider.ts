@@ -16,8 +16,16 @@ export class SpyWebSocketProvider implements WebSocketProvider {
     return this.args;
   }
 
+  get BaseUrl() {
+    return this.baseUrl;
+  }
+
   async connect(roomId: string) {
     this.constructUrl(roomId);
     this.args.push(this.baseUrl);
+  }
+
+  async disconnect() {
+    this.baseUrl = "";
   }
 }
