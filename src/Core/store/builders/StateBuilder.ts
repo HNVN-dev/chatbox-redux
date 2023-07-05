@@ -1,4 +1,3 @@
-import { Chat } from "../slices/chat";
 import { RootState } from "../store";
 
 export class StateBuilder {
@@ -13,7 +12,27 @@ export class StateBuilder {
     return this;
   }
 
-  withChat(chatsSlice: Chat) {
+  withUser(userSlice: RootState["user"]) {
+    this.buildedState = {
+      ...this.buildedState,
+      user: {
+        ...userSlice,
+      },
+    };
+    return this;
+  }
+
+  withMessages(messagesSlice: RootState["messages"]) {
+    this.buildedState = {
+      ...this.buildedState,
+      messages: {
+        ...messagesSlice,
+      },
+    };
+    return this;
+  }
+
+  withChat(chatsSlice: RootState["chat"]) {
     this.buildedState = {
       ...this.buildedState,
       chat: {

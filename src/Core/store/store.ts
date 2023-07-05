@@ -7,17 +7,22 @@ import {
 } from "@reduxjs/toolkit";
 
 import { IdProvider } from "../gateways/IdProvider";
-import { WebSocketProvider } from "../gateways/WebSocketProvider";
+import { SocketProvider } from "../gateways/SocketProvider";
 
 import { chatsSlice } from "./slices/chat";
+import { messagesSlice } from "./slices/messages";
+import { socketMiddleware } from "./middlewares/socketMiddleware";
+import { userSlice } from "./slices/user/user";
 
 export interface Dependencies {
   idProvider: IdProvider;
-  webSocketProvider: WebSocketProvider;
+  socketProvider: SocketProvider;
 }
 
 export const reducer = combineReducers({
   [chatsSlice.name]: chatsSlice.reducer,
+  [messagesSlice.name]: messagesSlice.reducer,
+  [userSlice.name]: userSlice.reducer,
 });
 
 export class StoreBuilder {
@@ -51,7 +56,9 @@ export class StoreBuilder {
           thunk: {
             extraArgument: dependencies,
           },
-        });
+        }).prepend(
+          socketMiddleware({ socketProvider: dependencies.socketProvider! })
+        );
       },
       preloadedState,
     });

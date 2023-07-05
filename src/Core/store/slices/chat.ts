@@ -1,21 +1,14 @@
-import { endChat } from "../../usecases/endChat/endChat";
-import { initializeChat } from "../../usecases/initializeChat/initializeChat";
+import { sendMessage } from "../../usecases/chat/chatConversation/sendMessage";
+import { endChat } from "../../usecases/chat/endChat/endChat";
+import { initializeChat } from "../../usecases/chat/initializeChat/initializeChat";
 import { createSlice } from "@reduxjs/toolkit";
-
-export interface Chat<Status extends ChatStatus = ChatStatus> {
-  id: string;
-  messageIds: string[];
-  status: Status;
-}
-
-type InitializedChat = Chat<ChatStatus.INITIALIZED>;
-type EndedChat = Chat<ChatStatus.ENDED>;
-
-export enum ChatStatus {
-  INITIALIZED = "initialized",
-  ENDED = "ended",
-  IDLE = "idle",
-}
+import { MESSAGE_RECEIVED } from "./messages";
+import {
+  Chat,
+  ChatStatus,
+  EndedChat,
+  InitializedChat,
+} from "../../domain/Chat";
 
 const chatInitialState: Chat = {
   id: "",
@@ -32,8 +25,14 @@ export const chatsSlice = createSlice({
       .addCase(initializeChat.fulfilled, (state, action) => {
         return chatInitialization(state, action.payload.chatId);
       })
-      .addCase(endChat.fulfilled, (state, action) => {
+      .addCase(endChat.fulfilled, (state) => {
         return chatEnd(state);
+      })
+      .addCase(sendMessage.fulfilled, (state, action) => {
+        state.messageIds.push(action.payload.id);
+      })
+      .addCase(MESSAGE_RECEIVED, (state, action) => {
+        state.messageIds.push(action.payload.id);
       });
   },
 });

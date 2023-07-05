@@ -1,14 +1,14 @@
-import { SpyWebSocketProvider } from "../../../Secondary-Adapters/WebSocketProvider/SpyWebSocketProvider";
-import { StateBuilder } from "../../store/builders/StateBuilder";
-import { ChatStatus } from "../../store/slices/chat";
-import { StoreBuilder } from "../../store/store";
+import { FakeSocketProvider } from "../../../../Secondary-Adapters/WebSocketProvider/FakeSocketProvider";
+import { StateBuilder } from "../../../store/builders/StateBuilder";
+
+import { StoreBuilder } from "../../../store/store";
 
 import { endChat } from "./endChat";
 import { DATA } from "./fixture";
+import { ChatStatus } from "../../../domain/Chat";
 
 describe("endChat usecase", () => {
-  const webSocketProvider = new SpyWebSocketProvider();
-  webSocketProvider.defineBaseUrl(DATA.FAKE_BASE_URL);
+  const socketProvider = new FakeSocketProvider();
 
   const preloadedStateWithInitializedChat = StateBuilder.init()
     .withChat({
@@ -20,15 +20,13 @@ describe("endChat usecase", () => {
 
   const store = StoreBuilder.init()
     .withPreloadedState(preloadedStateWithInitializedChat)
-    .withDependencies({ webSocketProvider })
+    .withDependencies({ socketProvider })
     .build();
 
   const initialState = store.getState();
 
   it("should end chat", async () => {
     await store.dispatch(endChat());
-
-    expect(webSocketProvider.BaseUrl).toEqual("");
 
     expect(store.getState()).toStrictEqual({
       ...StateBuilder.init()
