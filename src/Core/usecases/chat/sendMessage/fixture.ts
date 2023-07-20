@@ -7,7 +7,7 @@ import { sendMessage } from "./sendMessage";
 
 import { SpySocketProvider } from "../../../../Secondary-Adapters/SocketProvider/SpySocketProvider";
 import { EventType, MessageSended } from "../../../domain/Events/ChatBoxEvent";
-import { CHAT_FIXTURE_DATA, ChatFixtureDependencies } from "../chatFixture";
+import { CHAT_FIXTURE_DATA, ChatFixture } from "../chatFixture";
 
 export class DATA {
   static SENDED_MESSAGE: Message = {
@@ -22,13 +22,15 @@ export class Fixture {
   private store!: ReduxStore;
   private socketProvider!: SpySocketProvider;
 
-  constructor(private chatFixture: ChatFixtureDependencies) {}
+  constructor(private chatFixture: ChatFixture) {}
 
   givenAuthenticatedUserAndInitializedChat() {
-    this.store = this.chatFixture.store;
+    this.store =
+      this.chatFixture.buildStoreWithAuthenticatedUserAndInitializedChat();
     this.initialState = this.store.getState();
-    this.socketProvider = this.chatFixture.socketProvider as SpySocketProvider;
-    this.chatFixture.idProvider.StubValue(DATA.SENDED_MESSAGE.id);
+    this.socketProvider =
+      this.chatFixture.getSocketProvider() as SpySocketProvider;
+    this.chatFixture.getIdProvider().StubValue(DATA.SENDED_MESSAGE.id);
   }
 
   async whenUserSendMessage() {

@@ -3,7 +3,7 @@ import { SpySocketProvider } from "../../../../Secondary-Adapters/SocketProvider
 import { ChatStatus } from "../../../domain/Chat";
 import { StateBuilder } from "../../../store/builders/StateBuilder";
 import { RootState, ReduxStore } from "../../../store/store";
-import { CHAT_FIXTURE_DATA, ChatFixtureDependencies } from "../chatFixture";
+import { CHAT_FIXTURE_DATA, ChatFixture } from "../chatFixture";
 import { initializeChat } from "./initializeChat";
 
 const DATA = {
@@ -15,13 +15,14 @@ export class Fixture {
   private store!: ReduxStore;
   private socketProvider!: SpySocketProvider;
 
-  constructor(private chatFixture: ChatFixtureDependencies) {}
+  constructor(private chatFixture: ChatFixture) {}
 
   givenAuthenticatedUser() {
-    this.store = this.chatFixture.store;
-    this.socketProvider = this.chatFixture.socketProvider as SpySocketProvider;
+    this.store = this.chatFixture.buildStoreWithAuthenticatedUser();
+    this.socketProvider =
+      this.chatFixture.getSocketProvider() as SpySocketProvider;
     this.initialState = this.store.getState();
-    this.chatFixture.idProvider.StubValue(DATA.STUB_CHAT_ID);
+    this.chatFixture.getIdProvider().StubValue(DATA.STUB_CHAT_ID);
   }
 
   async whenUserInitializeChat() {

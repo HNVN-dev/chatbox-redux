@@ -39,7 +39,7 @@ export class ChatFixture {
     return this;
   }
 
-  withStoreWithAuthenticatedUserAndInitializedChat() {
+  buildStoreWithAuthenticatedUserAndInitializedChat() {
     const preloadedStateWithUserAndChat = StateBuilder.init()
       .withUser({
         ...CHAT_FIXTURE_DATA.FAKE_USER,
@@ -55,10 +55,10 @@ export class ChatFixture {
       .withPreloadedState(preloadedStateWithUserAndChat)
       .build();
 
-    return this;
+    return this.store;
   }
 
-  withStoreWithAuthenticatedUser() {
+  buildStoreWithAuthenticatedUser() {
     const preloadedStateWithUser = StateBuilder.init()
       .withUser({
         ...CHAT_FIXTURE_DATA.FAKE_USER,
@@ -73,14 +73,14 @@ export class ChatFixture {
       .withPreloadedState(preloadedStateWithUser)
       .build();
 
-    return this;
+    return this.store;
   }
 
-  build() {
-    return {
-      store: this.store,
-      socketProvider: this.socketProvider,
-      idProvider: this.idProvider,
-    };
+  getSocketProvider() {
+    return this.socketProvider;
+  }
+
+  getIdProvider() {
+    return this.idProvider;
   }
 }

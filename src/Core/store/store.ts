@@ -13,7 +13,7 @@ import { chatsSlice } from "./slices/chat";
 import { messagesSlice } from "./slices/messages";
 import { socketMiddleware } from "./middlewares/socketMiddleware/socketMiddleware";
 import { userSlice } from "./slices/user/user";
-import { initializeOnMessageReceived } from "./middlewares/socketMiddleware/initializeOnMessageReceived";
+import { initializeOnMessageReceived } from "./middlewares/socketMiddleware/initializeOnMessageReceived/initializeOnMessageReceived";
 
 export interface Dependencies {
   idProvider: IdProvider;
