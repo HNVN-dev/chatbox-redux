@@ -1,19 +1,18 @@
+import { ChatFixture } from "../chatFixture";
 import { Fixture } from "./fixture";
 
-import { ChatFixture } from "../chatFixture";
-
-describe("endChat usecase", () => {
+describe("send Message use case", () => {
   const _ = new Fixture({
     ...ChatFixture.init()
       .withStoreWithAuthenticatedUserAndInitializedChat()
       .build(),
   });
 
-  it("should end chat", () => {
+  it("should be sent successfully", async () => {
     _.givenAuthenticatedUserAndInitializedChat();
 
-    _.whenUserEndChat();
+    await _.whenUserSendMessage();
 
-    _.thenTheChatIsClosed();
+    _.thenTheMessageShouldBeSended();
   });
 });

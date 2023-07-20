@@ -6,7 +6,7 @@ import {
   isAnyOf,
 } from "@reduxjs/toolkit";
 import { Message } from "../../domain/Message";
-import { sendMessage } from "../../usecases/chat/chatConversation/sendMessage";
+import { sendMessage } from "../../usecases/chat/sendMessage/sendMessage";
 import { EventType } from "../../domain/Events/ChatBoxEvent";
 
 export type MessagesSlice = EntityState<Message>;

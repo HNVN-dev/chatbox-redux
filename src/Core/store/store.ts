@@ -1,3 +1,4 @@
+import { SocketProvider } from "./../gateways/SocketProvider";
 import {
   Action,
   Store,
@@ -7,12 +8,12 @@ import {
 } from "@reduxjs/toolkit";
 
 import { IdProvider } from "../gateways/IdProvider";
-import { SocketProvider } from "../gateways/SocketProvider";
 
 import { chatsSlice } from "./slices/chat";
 import { messagesSlice } from "./slices/messages";
-import { socketMiddleware } from "./middlewares/socketMiddleware";
+import { socketMiddleware } from "./middlewares/socketMiddleware/socketMiddleware";
 import { userSlice } from "./slices/user/user";
+import { initializeOnMessageReceived } from "./middlewares/socketMiddleware/initializeOnMessageReceived";
 
 export interface Dependencies {
   idProvider: IdProvider;
@@ -45,8 +46,9 @@ export class StoreBuilder {
 
   build(): ReduxStore {
     const dependencies = this.dependencies;
+    const socketProvider = this.dependencies.socketProvider!;
     const preloadedState = this.preloadedState;
-    return configureStore({
+    const store = configureStore({
       reducer,
       middleware(getDefaultMiddleware) {
         return getDefaultMiddleware({
@@ -56,12 +58,17 @@ export class StoreBuilder {
           thunk: {
             extraArgument: dependencies,
           },
-        }).prepend(
-          socketMiddleware({ socketProvider: dependencies.socketProvider! })
-        );
+        }).prepend(socketMiddleware({ socketProvider }));
       },
       preloadedState,
     });
+
+    initializeOnMessageReceived({
+      socketProvider,
+      dispatch: store.dispatch,
+    });
+
+    return store;
   }
 }
 

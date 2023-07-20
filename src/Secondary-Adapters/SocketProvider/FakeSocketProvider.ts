@@ -21,7 +21,7 @@ export class FakeSocketProvider implements SocketProvider {
   }
 
   simulateOnEventReceived(eventName: string, payload: Message) {
-    const maybeEventFn = this.eventMapFn.get(eventName);
-    return maybeEventFn ? maybeEventFn(payload) : null;
+    const maybeEventDispatcherFn = this.eventMapFn.get(eventName);
+    return maybeEventDispatcherFn ? maybeEventDispatcherFn(payload) : null;
   }
 }

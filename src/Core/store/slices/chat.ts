@@ -1,4 +1,4 @@
-import { sendMessage } from "../../usecases/chat/chatConversation/sendMessage";
+import { sendMessage } from "../../usecases/chat/sendMessage/sendMessage";
 import { endChat } from "../../usecases/chat/endChat/endChat";
 import { initializeChat } from "../../usecases/chat/initializeChat/initializeChat";
 import { createSlice } from "@reduxjs/toolkit";
@@ -25,7 +25,7 @@ export const chatsSlice = createSlice({
       .addCase(initializeChat.fulfilled, (state, action) => {
         return chatInitialization(state, action.payload.chatId);
       })
-      .addCase(endChat.fulfilled, (state) => {
+      .addCase(endChat, (state) => {
         return chatEnd(state);
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
